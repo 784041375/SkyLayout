@@ -21,8 +21,9 @@ let package = Package(
         .target(
             name: "SkyLayout",
             dependencies: []),
-        .testTarget(
-            name: "SkyLayoutTests",
-            dependencies: ["SkyLayout"]),
-    ]
+        //        .testTarget(
+        //            name: "SkyLayoutTests",
+        //            dependencies: ["SkyLayout"]),
+    ],
+    swiftLanguageVersions: [.v5]
 )
