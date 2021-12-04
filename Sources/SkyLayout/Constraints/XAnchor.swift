@@ -19,28 +19,28 @@ public class SkyXAnchor {
         self.view = view
     }
     
-    public var left: SkyMultiAnchor {
+    public var left: SkyMultiAnchor<DisableEqualToConstant> {
         return .init(view: view, x: [path, \.leftAnchor])
     }
-    public var right: SkyMultiAnchor {
+    public var right: SkyMultiAnchor<DisableEqualToConstant> {
         return .init(view: view, x: [path, \.rightAnchor])
     }
-    public var top: SkyMultiAnchor {
+    public var top: SkyMultiAnchor<DisableEqualToConstant> {
         return .init(view: view, x: [path], y: [\.topAnchor])
     }
-    public var bottom: SkyMultiAnchor {
+    public var bottom: SkyMultiAnchor<DisableEqualToConstant> {
         return .init(view: view, x: [path], y: [\.bottomAnchor])
     }
-    public var centerX: SkyMultiAnchor {
+    public var centerX: SkyMultiAnchor<DisableEqualToConstant> {
         return .init(view: view, x: [path, \.centerXAnchor])
     }
-    public var centerY: SkyMultiAnchor {
+    public var centerY: SkyMultiAnchor<DisableEqualToConstant> {
         return .init(view: view, x: [path], y: [\.centerYAnchor])
     }
-    public var height: SkyMultiAnchor {
+    public var height: SkyMultiAnchor<DisableEqualToConstant> {
         return .init(view: view, x: [path], dimension: [\.heightAnchor])
     }
-    public var width: SkyMultiAnchor {
+    public var width: SkyMultiAnchor<DisableEqualToConstant> {
         return .init(view: view, x: [path], dimension: [\.widthAnchor])
     }
     
@@ -69,6 +69,13 @@ public class SkyXAnchor {
     @discardableResult
     public static func ==(l: SkyXAnchor, r: NSLayoutXAxisAnchor) -> NSLayoutConstraint {
         let cons = l.view[keyPath: l.path].constraint(equalTo: r, constant: -l.constant)
+        cons.isActive = true
+        return cons
+    }
+    
+    @discardableResult
+    public static func ==(l: NSLayoutXAxisAnchor, r: SkyXAnchor) -> NSLayoutConstraint {
+        let cons = l.constraint(equalTo: r.view[keyPath: r.path], constant: r.constant)
         cons.isActive = true
         return cons
     }

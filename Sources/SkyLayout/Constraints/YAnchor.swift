@@ -19,28 +19,28 @@ public class SkyYAnchor {
         self.view = view
     }
     
-    public var left: SkyMultiAnchor {
+    public var left: SkyMultiAnchor<DisableEqualToConstant> {
         return .init(view: view, x: [\.leftAnchor], y: [path])
     }
-    public var right: SkyMultiAnchor {
+    public var right: SkyMultiAnchor<DisableEqualToConstant> {
         return .init(view: view, x: [\.rightAnchor], y: [path])
     }
-    public var top: SkyMultiAnchor {
+    public var top: SkyMultiAnchor<DisableEqualToConstant> {
         return .init(view: view, y: [path, \.topAnchor])
     }
-    public var bottom: SkyMultiAnchor {
+    public var bottom: SkyMultiAnchor<DisableEqualToConstant> {
         return .init(view: view, y: [path, \.bottomAnchor])
     }
-    public var centerX: SkyMultiAnchor {
+    public var centerX: SkyMultiAnchor<DisableEqualToConstant> {
         return .init(view: view, x: [\.centerXAnchor], y: [path])
     }
-    public var centerY: SkyMultiAnchor {
+    public var centerY: SkyMultiAnchor<DisableEqualToConstant> {
         return .init(view: view, y: [path, \.centerYAnchor])
     }
-    public var height: SkyMultiAnchor {
+    public var height: SkyMultiAnchor<DisableEqualToConstant> {
         return .init(view: view, y: [path], dimension: [\.heightAnchor])
     }
-    public var width: SkyMultiAnchor {
+    public var width: SkyMultiAnchor<DisableEqualToConstant> {
         return .init(view: view, y: [path], dimension: [\.widthAnchor])
     }
     
@@ -71,5 +71,15 @@ public class SkyYAnchor {
         let cons = l.view[keyPath: l.path].constraint(equalTo: r, constant: -l.constant)
         cons.isActive = true
         return cons
+    }
+    
+    @discardableResult
+    public static func ==(l: NSLayoutYAxisAnchor, r: SkyYAnchor) -> NSLayoutConstraint {
+        let cons = l.constraint(equalTo: r.view[keyPath: r.path], constant: r.constant)
+        cons.isActive = true
+        return cons
+    }
+    func f<T>(a: T ...) where T: SkyXAnchor {
+        
     }
 }

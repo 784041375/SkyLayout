@@ -31,7 +31,7 @@ public extension UIView {
     var width: SkyDimension {
         return .init(self, \.widthAnchor)
     }
-    var edges: SkyMultiAnchor {
+    var edges: SkyMultiAnchor<DisableEqualToConstant> {
         return .init(view: self, x: [\.leftAnchor, \.rightAnchor], y: [\.topAnchor, \.bottomAnchor])
     }
 }

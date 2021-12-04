@@ -6,7 +6,7 @@
 //
 import UIKit
 
-public class SkyMultiAnchor {
+public class SkyMultiAnchor<EqualToConstant> {
 
     private var view: UIView
     
@@ -65,4 +65,19 @@ public class SkyMultiAnchor {
         }
         return cons
     }
+    
+    @discardableResult
+    public static func ==(l: SkyMultiAnchor, r: CGFloat) -> [NSLayoutConstraint] where EqualToConstant: EnableEqualToConstant {
+        var cons = [NSLayoutConstraint]()
+        for dimensionPath in l.dimensionPaths {
+            let con = l.view[keyPath: dimensionPath].constraint(equalToConstant: r)
+            con.isActive = true
+            cons.append(con)
+        }
+        return cons
+    }
 }
+
+public protocol EnableEqualToConstant {}
+
+public protocol DisableEqualToConstant {}
