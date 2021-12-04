@@ -72,4 +72,11 @@ public class SkyDimension {
         cons.isActive = true
         return cons
     }
+    
+    @discardableResult
+    public static func ==(l: SkyDimension, r: NSLayoutDimension) -> NSLayoutConstraint {
+        let cons = l.view[keyPath: l.path].constraint(equalTo: r, multiplier: 1 / l.multipier, constant: -l.constant)
+        cons.isActive = true
+        return cons
+    }
 }

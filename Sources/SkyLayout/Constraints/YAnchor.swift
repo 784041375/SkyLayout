@@ -65,4 +65,11 @@ public class SkyYAnchor {
         cons.isActive = true
         return cons
     }
+    
+    @discardableResult
+    public static func ==(l: SkyYAnchor, r: NSLayoutYAxisAnchor) -> NSLayoutConstraint {
+        let cons = l.view[keyPath: l.path].constraint(equalTo: r, constant: -l.constant)
+        cons.isActive = true
+        return cons
+    }
 }
