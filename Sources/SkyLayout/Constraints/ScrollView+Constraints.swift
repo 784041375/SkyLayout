@@ -7,10 +7,11 @@
 
 import UIKit
 
-//MARK: - extension for safeAreaLayoutGuide
+//MARK: - extension for frameLayoutGuide
 
 @available(iOS 11.0, *)
 public extension UIScrollView {
+    
     var frameLeft: NSLayoutXAxisAnchor {
         frameLayoutGuide.leftAnchor
     }
@@ -35,5 +36,4 @@ public extension UIScrollView {
     var frameWidth: NSLayoutDimension {
         frameLayoutGuide.widthAnchor
     }
-
 }

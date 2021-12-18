@@ -7,6 +7,10 @@
 
 import UIKit
 
+public protocol EnableEqualToConstant {}
+
+public protocol DisableEqualToConstant {}
+
 public final class SkyMultiAnchor<EqualToConstant> {
 
     private var view: UIView
@@ -22,7 +26,7 @@ public final class SkyMultiAnchor<EqualToConstant> {
     }
     
     public var left: SkyMultiAnchor<DisableEqualToConstant> {
-        addPath(\UIView.leftAnchor)
+        xPaths.append(\.leftAnchor)
         return toDisableEqualToConstant()
     }
     public var right: SkyMultiAnchor<DisableEqualToConstant> {
@@ -63,52 +67,36 @@ public final class SkyMultiAnchor<EqualToConstant> {
     }
     
     @discardableResult
-    func addPath<T>(_ path: T) -> SkyMultiAnchor {
-        return self
-    }
-    @discardableResult
-    func addPath<T>(_ path: T) -> SkyMultiAnchor where T: KeyPath<UIView, NSLayoutXAxisAnchor> {
+    func addPath(_ path: KeyPath<UIView, NSLayoutXAxisAnchor>) -> SkyMultiAnchor {
         xPaths.append(path)
         return self
     }
     @discardableResult
-    func addPath<T>(_ path: T) -> SkyMultiAnchor where T: KeyPath<UIView, NSLayoutYAxisAnchor> {
+    func addPath(_ path: KeyPath<UIView, NSLayoutYAxisAnchor>) -> SkyMultiAnchor {
         yPaths.append(path)
         return self
     }
     @discardableResult
-    func addPath<T>(_ path: T) -> SkyMultiAnchor where T: KeyPath<UIView, NSLayoutDimension> {
+    func addPath(_ path: KeyPath<UIView, NSLayoutDimension>) -> SkyMultiAnchor {
         dimensionPaths.append(path)
         return self
     }
     
     @discardableResult
     public static func ==(l: SkyMultiAnchor, r: UIView) -> [NSLayoutConstraint] {
-        var cons = [NSLayoutConstraint]()
-        for xPath in l.xPaths {
-            cons.append(SkyAnchor(l.view, xPath) == r)
-        }
-        for yPath in l.yPaths {
-            cons.append(SkyAnchor(l.view, yPath) == r)
-        }
-        for dimensionPath in l.dimensionPaths {
-            cons.append(SkyAnchor(l.view, dimensionPath) == r)
-        }
-        return cons
-    }
-    
-    @discardableResult
-    public static func ==(l: SkyMultiAnchor, r: CGFloat) -> [NSLayoutConstraint] where EqualToConstant: EnableEqualToConstant {
-        var cons = [NSLayoutConstraint]()
-        for dimensionPath in l.dimensionPaths {
-            let con = l.view[keyPath: dimensionPath].constraint(equalToConstant: r)
-            con.isActive = true
-            cons.append(con)
-        }
+        var cons = l.xPaths.map { SkyAnchor(l.view, $0) == r }
+        cons.append(contentsOf: l.yPaths.map { SkyAnchor(l.view, $0) == r })
+        cons.append(contentsOf: l.dimensionPaths.map { SkyAnchor(l.view, $0) == r })
         return cons
     }
 }
 
-public protocol EnableEqualToConstant {}
+//MARK: - extension for NSLayoutDimension
 
-public protocol DisableEqualToConstant {}
+extension SkyMultiAnchor where EqualToConstant == EnableEqualToConstant {
+    
+    @discardableResult
+    public static func ==(l: SkyMultiAnchor, r: CGFloat) -> [NSLayoutConstraint] {
+        return l.dimensionPaths.map { SkyAnchor(l.view, $0) == r }
+    }
+}
