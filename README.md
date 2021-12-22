@@ -1,7 +1,9 @@
 # SkyLayout
 
 let a = UIView()
+
 let b = UIScrollView()
+
 a.addSubview(b)
 
 a.left - 5 == b.right + 5
