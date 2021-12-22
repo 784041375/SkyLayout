@@ -24,6 +24,5 @@ let package = Package(
         .testTarget(
             name: "SkyLayoutTests",
             dependencies: ["SkyLayout"]),
-    ],
-    swiftLanguageVersions: [.v5]
+    ]
 )
